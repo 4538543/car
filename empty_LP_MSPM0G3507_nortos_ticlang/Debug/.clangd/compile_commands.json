@@ -1,0 +1,67 @@
+[
+   {
+      "directory" : "F:/car/empty_LP_MSPM0G3507_nortos_ticlang/Debug",
+      "command"   : "clang++ -D__MSPM0G3507__ -D__USE_SYSCONFIG__ -I\"F:/car/empty_LP_MSPM0G3507_nortos_ticlang\" -I\"F:/car/empty_LP_MSPM0G3507_nortos_ticlang/Debug\" -I\"D:/CCS_21.0.0.00014_win/CCS_21.0.0.00014_win/mspm0_sdk_2_11_00_07/source/third_party/CMSIS/Core/Include\" -I\"D:/CCS_21.0.0.00014_win/CCS_21.0.0.00014_win/mspm0_sdk_2_11_00_07/source\" -isystem\"D:/CCS_21.0.0.00014_win/ccs/tools/compiler/ti-cgt-armllvm_5.1.1.LTS/include/armv7em-ti-none-eabihf/c++/v1\" -isystem\"D:/CCS_21.0.0.00014_win/ccs/tools/compiler/ti-cgt-armllvm_5.1.1.LTS/include/c++/v1\" -isystem\"D:/CCS_21.0.0.00014_win/ccs/tools/compiler/ti-cgt-armllvm_5.1.1.LTS/lib/clang/22/include\" -isystem\"D:/CCS_21.0.0.00014_win/ccs/tools/compiler/ti-cgt-armllvm_5.1.1.LTS/include/c\" -xc",
+      "file"      : "F:/car/empty_LP_MSPM0G3507_nortos_ticlang/Debug/ti_msp_dl_config.c"
+   },
+   {
+      "directory" : "F:/car/empty_LP_MSPM0G3507_nortos_ticlang/Debug",
+      "command"   : "clang++ -D__MSPM0G3507__ -D__USE_SYSCONFIG__ -I\"F:/car/empty_LP_MSPM0G3507_nortos_ticlang\" -I\"F:/car/empty_LP_MSPM0G3507_nortos_ticlang/Debug\" -I\"D:/CCS_21.0.0.00014_win/CCS_21.0.0.00014_win/mspm0_sdk_2_11_00_07/source/third_party/CMSIS/Core/Include\" -I\"D:/CCS_21.0.0.00014_win/CCS_21.0.0.00014_win/mspm0_sdk_2_11_00_07/source\" -isystem\"D:/CCS_21.0.0.00014_win/ccs/tools/compiler/ti-cgt-armllvm_5.1.1.LTS/include/armv7em-ti-none-eabihf/c++/v1\" -isystem\"D:/CCS_21.0.0.00014_win/ccs/tools/compiler/ti-cgt-armllvm_5.1.1.LTS/include/c++/v1\" -isystem\"D:/CCS_21.0.0.00014_win/ccs/tools/compiler/ti-cgt-armllvm_5.1.1.LTS/lib/clang/22/include\" -isystem\"D:/CCS_21.0.0.00014_win/ccs/tools/compiler/ti-cgt-armllvm_5.1.1.LTS/include/c\" -xc",
+      "file"      : "F:/car/empty_LP_MSPM0G3507_nortos_ticlang/empty.c"
+   },
+   {
+      "directory" : "F:/car/empty_LP_MSPM0G3507_nortos_ticlang/Debug",
+      "command"   : "clang++ -D__MSPM0G3507__ -D__USE_SYSCONFIG__ -I\"F:/car/empty_LP_MSPM0G3507_nortos_ticlang\" -I\"F:/car/empty_LP_MSPM0G3507_nortos_ticlang/Debug\" -I\"D:/CCS_21.0.0.00014_win/CCS_21.0.0.00014_win/mspm0_sdk_2_11_00_07/source/third_party/CMSIS/Core/Include\" -I\"D:/CCS_21.0.0.00014_win/CCS_21.0.0.00014_win/mspm0_sdk_2_11_00_07/source\" -isystem\"D:/CCS_21.0.0.00014_win/ccs/tools/compiler/ti-cgt-armllvm_5.1.1.LTS/include/armv7em-ti-none-eabihf/c++/v1\" -isystem\"D:/CCS_21.0.0.00014_win/ccs/tools/compiler/ti-cgt-armllvm_5.1.1.LTS/include/c++/v1\" -isystem\"D:/CCS_21.0.0.00014_win/ccs/tools/compiler/ti-cgt-armllvm_5.1.1.LTS/lib/clang/22/include\" -isystem\"D:/CCS_21.0.0.00014_win/ccs/tools/compiler/ti-cgt-armllvm_5.1.1.LTS/include/c\" -xc",
+      "file"      : "F:/car/empty_LP_MSPM0G3507_nortos_ticlang/motor.c"
+   },
+   {
+      "directory" : "F:/car/empty_LP_MSPM0G3507_nortos_ticlang/Debug",
+      "command"   : "clang++ -D__MSPM0G3507__ -D__USE_SYSCONFIG__ -I\"F:/car/empty_LP_MSPM0G3507_nortos_ticlang\" -I\"F:/car/empty_LP_MSPM0G3507_nortos_ticlang/Debug\" -I\"D:/CCS_21.0.0.00014_win/CCS_21.0.0.00014_win/mspm0_sdk_2_11_00_07/source/third_party/CMSIS/Core/Include\" -I\"D:/CCS_21.0.0.00014_win/CCS_21.0.0.00014_win/mspm0_sdk_2_11_00_07/source\" -isystem\"D:/CCS_21.0.0.00014_win/ccs/tools/compiler/ti-cgt-armllvm_5.1.1.LTS/include/armv7em-ti-none-eabihf/c++/v1\" -isystem\"D:/CCS_21.0.0.00014_win/ccs/tools/compiler/ti-cgt-armllvm_5.1.1.LTS/include/c++/v1\" -isystem\"D:/CCS_21.0.0.00014_win/ccs/tools/compiler/ti-cgt-armllvm_5.1.1.LTS/lib/clang/22/include\" -isystem\"D:/CCS_21.0.0.00014_win/ccs/tools/compiler/ti-cgt-armllvm_5.1.1.LTS/include/c\" -xc",
+      "file"      : "F:/car/empty_LP_MSPM0G3507_nortos_ticlang/indicator.c"
+   },
+   {
+      "directory" : "F:/car/empty_LP_MSPM0G3507_nortos_ticlang/Debug",
+      "command"   : "clang++ -D__MSPM0G3507__ -D__USE_SYSCONFIG__ -I\"F:/car/empty_LP_MSPM0G3507_nortos_ticlang\" -I\"F:/car/empty_LP_MSPM0G3507_nortos_ticlang/Debug\" -I\"D:/CCS_21.0.0.00014_win/CCS_21.0.0.00014_win/mspm0_sdk_2_11_00_07/source/third_party/CMSIS/Core/Include\" -I\"D:/CCS_21.0.0.00014_win/CCS_21.0.0.00014_win/mspm0_sdk_2_11_00_07/source\" -isystem\"D:/CCS_21.0.0.00014_win/ccs/tools/compiler/ti-cgt-armllvm_5.1.1.LTS/include/armv7em-ti-none-eabihf/c++/v1\" -isystem\"D:/CCS_21.0.0.00014_win/ccs/tools/compiler/ti-cgt-armllvm_5.1.1.LTS/include/c++/v1\" -isystem\"D:/CCS_21.0.0.00014_win/ccs/tools/compiler/ti-cgt-armllvm_5.1.1.LTS/lib/clang/22/include\" -isystem\"D:/CCS_21.0.0.00014_win/ccs/tools/compiler/ti-cgt-armllvm_5.1.1.LTS/include/c\" -xc",
+      "file"      : "F:/car/empty_LP_MSPM0G3507_nortos_ticlang/line_sensor.c"
+   },
+   {
+      "directory" : "F:/car/empty_LP_MSPM0G3507_nortos_ticlang/Debug",
+      "command"   : "clang++ -D__MSPM0G3507__ -D__USE_SYSCONFIG__ -I\"F:/car/empty_LP_MSPM0G3507_nortos_ticlang\" -I\"F:/car/empty_LP_MSPM0G3507_nortos_ticlang/Debug\" -I\"D:/CCS_21.0.0.00014_win/CCS_21.0.0.00014_win/mspm0_sdk_2_11_00_07/source/third_party/CMSIS/Core/Include\" -I\"D:/CCS_21.0.0.00014_win/CCS_21.0.0.00014_win/mspm0_sdk_2_11_00_07/source\" -isystem\"D:/CCS_21.0.0.00014_win/ccs/tools/compiler/ti-cgt-armllvm_5.1.1.LTS/include/armv7em-ti-none-eabihf/c++/v1\" -isystem\"D:/CCS_21.0.0.00014_win/ccs/tools/compiler/ti-cgt-armllvm_5.1.1.LTS/include/c++/v1\" -isystem\"D:/CCS_21.0.0.00014_win/ccs/tools/compiler/ti-cgt-armllvm_5.1.1.LTS/lib/clang/22/include\" -isystem\"D:/CCS_21.0.0.00014_win/ccs/tools/compiler/ti-cgt-armllvm_5.1.1.LTS/include/c\" -xc",
+      "file"      : "F:/car/empty_LP_MSPM0G3507_nortos_ticlang/encoder.c"
+   },
+   {
+      "directory" : "F:/car/empty_LP_MSPM0G3507_nortos_ticlang/Debug",
+      "command"   : "clang++ -D__MSPM0G3507__ -D__USE_SYSCONFIG__ -I\"F:/car/empty_LP_MSPM0G3507_nortos_ticlang\" -I\"F:/car/empty_LP_MSPM0G3507_nortos_ticlang/Debug\" -I\"D:/CCS_21.0.0.00014_win/CCS_21.0.0.00014_win/mspm0_sdk_2_11_00_07/source/third_party/CMSIS/Core/Include\" -I\"D:/CCS_21.0.0.00014_win/CCS_21.0.0.00014_win/mspm0_sdk_2_11_00_07/source\" -isystem\"D:/CCS_21.0.0.00014_win/ccs/tools/compiler/ti-cgt-armllvm_5.1.1.LTS/include/armv7em-ti-none-eabihf/c++/v1\" -isystem\"D:/CCS_21.0.0.00014_win/ccs/tools/compiler/ti-cgt-armllvm_5.1.1.LTS/include/c++/v1\" -isystem\"D:/CCS_21.0.0.00014_win/ccs/tools/compiler/ti-cgt-armllvm_5.1.1.LTS/lib/clang/22/include\" -isystem\"D:/CCS_21.0.0.00014_win/ccs/tools/compiler/ti-cgt-armllvm_5.1.1.LTS/include/c\" -xc",
+      "file"      : "F:/car/empty_LP_MSPM0G3507_nortos_ticlang/gyro.c"
+   },
+   {
+      "directory" : "F:/car/empty_LP_MSPM0G3507_nortos_ticlang/Debug",
+      "command"   : "clang++ -D__MSPM0G3507__ -D__USE_SYSCONFIG__ -I\"F:/car/empty_LP_MSPM0G3507_nortos_ticlang\" -I\"F:/car/empty_LP_MSPM0G3507_nortos_ticlang/Debug\" -I\"D:/CCS_21.0.0.00014_win/CCS_21.0.0.00014_win/mspm0_sdk_2_11_00_07/source/third_party/CMSIS/Core/Include\" -I\"D:/CCS_21.0.0.00014_win/CCS_21.0.0.00014_win/mspm0_sdk_2_11_00_07/source\" -isystem\"D:/CCS_21.0.0.00014_win/ccs/tools/compiler/ti-cgt-armllvm_5.1.1.LTS/include/armv7em-ti-none-eabihf/c++/v1\" -isystem\"D:/CCS_21.0.0.00014_win/ccs/tools/compiler/ti-cgt-armllvm_5.1.1.LTS/include/c++/v1\" -isystem\"D:/CCS_21.0.0.00014_win/ccs/tools/compiler/ti-cgt-armllvm_5.1.1.LTS/lib/clang/22/include\" -isystem\"D:/CCS_21.0.0.00014_win/ccs/tools/compiler/ti-cgt-armllvm_5.1.1.LTS/include/c\" -xc",
+      "file"      : "F:/car/empty_LP_MSPM0G3507_nortos_ticlang/task_buttons.c"
+   },
+   {
+      "directory" : "F:/car/empty_LP_MSPM0G3507_nortos_ticlang/Debug",
+      "command"   : "clang++ -D__MSPM0G3507__ -D__USE_SYSCONFIG__ -I\"F:/car/empty_LP_MSPM0G3507_nortos_ticlang\" -I\"F:/car/empty_LP_MSPM0G3507_nortos_ticlang/Debug\" -I\"D:/CCS_21.0.0.00014_win/CCS_21.0.0.00014_win/mspm0_sdk_2_11_00_07/source/third_party/CMSIS/Core/Include\" -I\"D:/CCS_21.0.0.00014_win/CCS_21.0.0.00014_win/mspm0_sdk_2_11_00_07/source\" -isystem\"D:/CCS_21.0.0.00014_win/ccs/tools/compiler/ti-cgt-armllvm_5.1.1.LTS/include/armv7em-ti-none-eabihf/c++/v1\" -isystem\"D:/CCS_21.0.0.00014_win/ccs/tools/compiler/ti-cgt-armllvm_5.1.1.LTS/include/c++/v1\" -isystem\"D:/CCS_21.0.0.00014_win/ccs/tools/compiler/ti-cgt-armllvm_5.1.1.LTS/lib/clang/22/include\" -isystem\"D:/CCS_21.0.0.00014_win/ccs/tools/compiler/ti-cgt-armllvm_5.1.1.LTS/include/c\" -xc",
+      "file"      : "F:/car/empty_LP_MSPM0G3507_nortos_ticlang/straight_control.c"
+   },
+   {
+      "directory" : "F:/car/empty_LP_MSPM0G3507_nortos_ticlang/Debug",
+      "command"   : "clang++ -D__MSPM0G3507__ -D__USE_SYSCONFIG__ -I\"F:/car/empty_LP_MSPM0G3507_nortos_ticlang\" -I\"F:/car/empty_LP_MSPM0G3507_nortos_ticlang/Debug\" -I\"D:/CCS_21.0.0.00014_win/CCS_21.0.0.00014_win/mspm0_sdk_2_11_00_07/source/third_party/CMSIS/Core/Include\" -I\"D:/CCS_21.0.0.00014_win/CCS_21.0.0.00014_win/mspm0_sdk_2_11_00_07/source\" -isystem\"D:/CCS_21.0.0.00014_win/ccs/tools/compiler/ti-cgt-armllvm_5.1.1.LTS/include/armv7em-ti-none-eabihf/c++/v1\" -isystem\"D:/CCS_21.0.0.00014_win/ccs/tools/compiler/ti-cgt-armllvm_5.1.1.LTS/include/c++/v1\" -isystem\"D:/CCS_21.0.0.00014_win/ccs/tools/compiler/ti-cgt-armllvm_5.1.1.LTS/lib/clang/22/include\" -isystem\"D:/CCS_21.0.0.00014_win/ccs/tools/compiler/ti-cgt-armllvm_5.1.1.LTS/include/c\" -xc",
+      "file"      : "F:/car/empty_LP_MSPM0G3507_nortos_ticlang/turn_control.c"
+   },
+   {
+      "directory" : "F:/car/empty_LP_MSPM0G3507_nortos_ticlang/Debug",
+      "command"   : "clang++ -D__MSPM0G3507__ -D__USE_SYSCONFIG__ -I\"F:/car/empty_LP_MSPM0G3507_nortos_ticlang\" -I\"F:/car/empty_LP_MSPM0G3507_nortos_ticlang/Debug\" -I\"D:/CCS_21.0.0.00014_win/CCS_21.0.0.00014_win/mspm0_sdk_2_11_00_07/source/third_party/CMSIS/Core/Include\" -I\"D:/CCS_21.0.0.00014_win/CCS_21.0.0.00014_win/mspm0_sdk_2_11_00_07/source\" -isystem\"D:/CCS_21.0.0.00014_win/ccs/tools/compiler/ti-cgt-armllvm_5.1.1.LTS/include/armv7em-ti-none-eabihf/c++/v1\" -isystem\"D:/CCS_21.0.0.00014_win/ccs/tools/compiler/ti-cgt-armllvm_5.1.1.LTS/include/c++/v1\" -isystem\"D:/CCS_21.0.0.00014_win/ccs/tools/compiler/ti-cgt-armllvm_5.1.1.LTS/lib/clang/22/include\" -isystem\"D:/CCS_21.0.0.00014_win/ccs/tools/compiler/ti-cgt-armllvm_5.1.1.LTS/include/c\" -xc",
+      "file"      : "F:/car/empty_LP_MSPM0G3507_nortos_ticlang/oled.c"
+   },
+   {
+      "directory" : "F:/car/empty_LP_MSPM0G3507_nortos_ticlang/Debug",
+      "command"   : "clang++ -D__MSPM0G3507__ -D__USE_SYSCONFIG__ -I\"F:/car/empty_LP_MSPM0G3507_nortos_ticlang\" -I\"F:/car/empty_LP_MSPM0G3507_nortos_ticlang/Debug\" -I\"D:/CCS_21.0.0.00014_win/CCS_21.0.0.00014_win/mspm0_sdk_2_11_00_07/source/third_party/CMSIS/Core/Include\" -I\"D:/CCS_21.0.0.00014_win/CCS_21.0.0.00014_win/mspm0_sdk_2_11_00_07/source\" -isystem\"D:/CCS_21.0.0.00014_win/ccs/tools/compiler/ti-cgt-armllvm_5.1.1.LTS/include/armv7em-ti-none-eabihf/c++/v1\" -isystem\"D:/CCS_21.0.0.00014_win/ccs/tools/compiler/ti-cgt-armllvm_5.1.1.LTS/include/c++/v1\" -isystem\"D:/CCS_21.0.0.00014_win/ccs/tools/compiler/ti-cgt-armllvm_5.1.1.LTS/lib/clang/22/include\" -isystem\"D:/CCS_21.0.0.00014_win/ccs/tools/compiler/ti-cgt-armllvm_5.1.1.LTS/include/c\" -xc",
+      "file"      : "F:/car/empty_LP_MSPM0G3507_nortos_ticlang/arc_interface.c"
+   },
+   {
+      "directory" : "F:/car/empty_LP_MSPM0G3507_nortos_ticlang/Debug",
+      "command"   : "clang++ -D__MSPM0G3507__ -D__USE_SYSCONFIG__ -I\"F:/car/empty_LP_MSPM0G3507_nortos_ticlang\" -I\"F:/car/empty_LP_MSPM0G3507_nortos_ticlang/Debug\" -I\"D:/CCS_21.0.0.00014_win/CCS_21.0.0.00014_win/mspm0_sdk_2_11_00_07/source/third_party/CMSIS/Core/Include\" -I\"D:/CCS_21.0.0.00014_win/CCS_21.0.0.00014_win/mspm0_sdk_2_11_00_07/source\" -isystem\"D:/CCS_21.0.0.00014_win/ccs/tools/compiler/ti-cgt-armllvm_5.1.1.LTS/include/armv7em-ti-none-eabihf/c++/v1\" -isystem\"D:/CCS_21.0.0.00014_win/ccs/tools/compiler/ti-cgt-armllvm_5.1.1.LTS/include/c++/v1\" -isystem\"D:/CCS_21.0.0.00014_win/ccs/tools/compiler/ti-cgt-armllvm_5.1.1.LTS/lib/clang/22/include\" -isystem\"D:/CCS_21.0.0.00014_win/ccs/tools/compiler/ti-cgt-armllvm_5.1.1.LTS/include/c\" -xc",
+      "file"      : "F:/car/empty_LP_MSPM0G3507_nortos_ticlang/mission.c"
+   }
+]
