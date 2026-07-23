@@ -10,7 +10,7 @@
 #define KEY_STARTUP_RELEASE_MS      100U
 #define START_GUARD_MS             300U
 #define BLACK_CONFIRM_MS            20U
-#define BLACK_SENSOR_MIN             5U
+#define BLACK_SENSOR_MIN             2U
 #define MISSION_TIMEOUT_MS       20000U
 #define Q1_MIN_DISTANCE_MM        1050U
 
@@ -18,8 +18,12 @@
 #define ENCODER_PULSES_PER_M       800U
 #define DRIVE_SPEED                360U
 #define TURN_SPEED                 260U
-#define HEADING_KP                   9
-#define HEADING_LIMIT              110
+#define HEADING_KP_NUM               8
+#define HEADING_KP_DEN              10
+#define HEADING_KI_DEN             500
+#define HEADING_KD_NUM               2
+#define HEADING_INTEGRAL_LIMIT    3000
+#define HEADING_LIMIT              140
 #define TURN_TOLERANCE_DECI_DEG     20
 #define TURN_STABLE_MS             180U
 
