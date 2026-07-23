@@ -22,7 +22,7 @@
 
 /* Encoder is counted on each channel-A rising edge. */
 #define WHEEL_DIAMETER_MM           65U
-#define ENCODER_PULSES_PER_REV     260U
+#define ENCODER_PULSES_PER_REV    1040U
 #define DRIVE_SPEED                360U
 #define APPROACH_SPEED             210U
 #define Q3_STAGE2_SPEED            290U
