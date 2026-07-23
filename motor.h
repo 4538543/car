@@ -1,13 +1,7 @@
-#ifndef MOTOR_H_
-#define MOTOR_H_
-
+#ifndef MOTOR_H
+#define MOTOR_H
 #include <stdint.h>
-
 void Motor_init(void);
-void Motor_enable(void);
-void Motor_disable(void);
-void Motor_setForward(uint16_t leftPermille, uint16_t rightPermille);
-void Motor_brakeAll(void);
-void Motor_coastAll(void);
-
+void Motor_drive(int16_t left, int16_t right);
+void Motor_stop(void);
 #endif

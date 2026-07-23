@@ -1,73 +1,37 @@
 #include "motor.h"
-
-#include "app_config.h"
 #include "ti_msp_dl_config.h"
 
-#define MOTOR_DUTY_MAX (1000U)
-
-static uint16_t Motor_clamp(uint16_t duty)
-{
-    return (duty > MOTOR_DUTY_MAX) ? MOTOR_DUTY_MAX : duty;
+static uint32_t compare(GPTIMER_Regs *t, uint16_t duty) {
+    uint32_t p = DL_Timer_getLoadValue(t) + 1U;
+    return p * duty / 1000U;
 }
-
-static uint32_t Motor_compare(GPTIMER_Regs *timer, uint16_t duty)
-{
-    uint32_t period = DL_Timer_getLoadValue(timer) + 1U;
-    return (period * (uint32_t) Motor_clamp(duty)) / MOTOR_DUTY_MAX;
+static void one(GPTIMER_Regs *t, DL_TIMER_CC_INDEX cc, uint16_t duty) {
+    if (duty > 1000U) duty = 1000U;
+    DL_Timer_setCaptureCompareValue(t, compare(t, duty), cc);
 }
-
-static void Motor_setDuty(GPTIMER_Regs *timer, DL_TIMER_CC_INDEX cc,
-                          uint16_t duty)
-{
-    DL_Timer_setCaptureCompareValue(timer, Motor_compare(timer, duty), cc);
+void Motor_init(void) {
+    /* SysConfig's PWM default duty may be non-zero.  Establish the safe
+       electrical state only after both timer counters are available. */
+    DL_Timer_startCounter(PWM_LEFT_INST);
+    DL_Timer_startCounter(PWM_RIGHT_INST);
+    Motor_stop();
 }
-
-void Motor_init(void)
-{
-    DL_GPIO_clearPins(MOTOR_DIR_PORT,
-        MOTOR_A_IN1_PIN | MOTOR_A_IN2_PIN |
-        MOTOR_B_IN1_PIN | MOTOR_B_IN2_PIN | MOTOR_STBY_PIN);
-
-    DL_Timer_startCounter(MOTOR_A_PWM_TIMER);
-    DL_Timer_startCounter(MOTOR_B_PWM_TIMER);
-    Motor_coastAll();
-    Motor_disable();
+void Motor_drive(int16_t left, int16_t right) {
+    uint16_t l = (left < 0) ? (uint16_t)-left : (uint16_t)left;
+    uint16_t r = (right < 0) ? (uint16_t)-right : (uint16_t)right;
+    if (left >= 0) { DL_GPIO_setPins(GPIOB, MOTOR_CTRL_MOTOR_A_IN1_PIN); DL_GPIO_clearPins(GPIOB, MOTOR_CTRL_MOTOR_A_IN2_PIN); }
+    else { DL_GPIO_clearPins(GPIOB, MOTOR_CTRL_MOTOR_A_IN1_PIN); DL_GPIO_setPins(GPIOB, MOTOR_CTRL_MOTOR_A_IN2_PIN); }
+    if (right >= 0) { DL_GPIO_setPins(GPIOB, MOTOR_CTRL_MOTOR_B_IN1_PIN); DL_GPIO_clearPins(GPIOB, MOTOR_CTRL_MOTOR_B_IN2_PIN); }
+    else { DL_GPIO_clearPins(GPIOB, MOTOR_CTRL_MOTOR_B_IN1_PIN); DL_GPIO_setPins(GPIOB, MOTOR_CTRL_MOTOR_B_IN2_PIN); }
+    DL_GPIO_setPins(GPIOB, MOTOR_CTRL_MOTOR_STBY_PIN);
+    one(PWM_LEFT_INST, GPIO_PWM_LEFT_C1_IDX, l); one(PWM_RIGHT_INST, GPIO_PWM_RIGHT_C0_IDX, r);
 }
-
-void Motor_enable(void)
-{
-    DL_GPIO_setPins(MOTOR_DIR_PORT, MOTOR_STBY_PIN);
-}
-
-void Motor_disable(void)
-{
-    DL_GPIO_clearPins(MOTOR_DIR_PORT, MOTOR_STBY_PIN);
-}
-
-void Motor_setForward(uint16_t leftPermille, uint16_t rightPermille)
-{
-    /* Motor A is the left rear wheel; Motor B is the right rear wheel. */
-    DL_GPIO_setPins(MOTOR_DIR_PORT, MOTOR_A_IN1_PIN | MOTOR_B_IN1_PIN);
-    DL_GPIO_clearPins(MOTOR_DIR_PORT, MOTOR_A_IN2_PIN | MOTOR_B_IN2_PIN);
-
-    Motor_setDuty(MOTOR_A_PWM_TIMER, MOTOR_A_PWM_CC, leftPermille);
-    Motor_setDuty(MOTOR_B_PWM_TIMER, MOTOR_B_PWM_CC, rightPermille);
-}
-
-void Motor_brakeAll(void)
-{
-    Motor_setDuty(MOTOR_A_PWM_TIMER, MOTOR_A_PWM_CC, MOTOR_DUTY_MAX);
-    Motor_setDuty(MOTOR_B_PWM_TIMER, MOTOR_B_PWM_CC, MOTOR_DUTY_MAX);
-    DL_GPIO_setPins(MOTOR_DIR_PORT,
-        MOTOR_A_IN1_PIN | MOTOR_A_IN2_PIN |
-        MOTOR_B_IN1_PIN | MOTOR_B_IN2_PIN);
-}
-
-void Motor_coastAll(void)
-{
-    Motor_setDuty(MOTOR_A_PWM_TIMER, MOTOR_A_PWM_CC, 0U);
-    Motor_setDuty(MOTOR_B_PWM_TIMER, MOTOR_B_PWM_CC, 0U);
-    DL_GPIO_clearPins(MOTOR_DIR_PORT,
-        MOTOR_A_IN1_PIN | MOTOR_A_IN2_PIN |
-        MOTOR_B_IN1_PIN | MOTOR_B_IN2_PIN);
+void Motor_stop(void) {
+    one(PWM_LEFT_INST, GPIO_PWM_LEFT_C1_IDX, 0U);
+    one(PWM_RIGHT_INST, GPIO_PWM_RIGHT_C0_IDX, 0U);
+    DL_GPIO_clearPins(GPIOB, MOTOR_CTRL_MOTOR_A_IN1_PIN |
+                              MOTOR_CTRL_MOTOR_A_IN2_PIN |
+                              MOTOR_CTRL_MOTOR_B_IN1_PIN |
+                              MOTOR_CTRL_MOTOR_B_IN2_PIN |
+                              MOTOR_CTRL_MOTOR_STBY_PIN);
 }

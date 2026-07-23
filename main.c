@@ -1,47 +1,11 @@
+#include <stdbool.h>
 #include "ti_msp_dl_config.h"
-
-#include "buttons.h"
+#include "gyro.h"
+#include "encoder.h"
+#include "keys.h"
+#include "lcd.h"
+#include "mission.h"
 #include "motor.h"
-
-#define APP_CPU_CLOCK_HZ       (80000000UL)
-#define APP_LOOP_DELAY_CYCLES  (APP_CPU_CLOCK_HZ / 1000UL)
-
-#define SPEED_80_PERCENT       (800U)
-/* round(800 / 1.52) = round(526.315...) = 526 per mille */
-#define SPEED_80_DIV_1_52      (526U)
-
-static void App_handleButton(Button_Event event)
-{
-    switch (event) {
-    case BUTTON_EQUAL:
-        Motor_run(MOTOR_A, MOTOR_FORWARD, SPEED_80_PERCENT);
-        Motor_run(MOTOR_B, MOTOR_FORWARD, SPEED_80_PERCENT);
-        break;
-
-    case BUTTON_A_FAST:
-        Motor_run(MOTOR_A, MOTOR_FORWARD, SPEED_80_PERCENT);
-        Motor_run(MOTOR_B, MOTOR_FORWARD, SPEED_80_DIV_1_52);
-        break;
-
-    case BUTTON_B_FAST:
-        Motor_run(MOTOR_A, MOTOR_FORWARD, SPEED_80_DIV_1_52);
-        Motor_run(MOTOR_B, MOTOR_FORWARD, SPEED_80_PERCENT);
-        break;
-
-    case BUTTON_NONE:
-    default:
-        break;
-    }
-}
-
-int main(void)
-{
-    SYSCFG_DL_init();
-    Motor_init();
-    Buttons_init();
-
-    while (1) {
-        App_handleButton(Buttons_poll1ms());
-        delay_cycles(APP_LOOP_DELAY_CYCLES);
-    }
-}
+static volatile bool tick;
+int main(void){SYSCFG_DL_init();Motor_init();Keys_init();Gyro_init();Encoder_init();Lcd_init();Mission_init();DL_Timer_clearInterruptStatus(CONTROL_TIMER_INST,DL_TIMER_INTERRUPT_ZERO_EVENT);DL_Timer_enableInterrupt(CONTROL_TIMER_INST,DL_TIMER_INTERRUPT_ZERO_EVENT);NVIC_EnableIRQ(CONTROL_TIMER_INST_INT_IRQN);while(1){if(tick){__disable_irq();tick=false;__enable_irq();Mission_task1ms();}}}
+void CONTROL_TIMER_INST_IRQHandler(void){if(DL_TimerG_getPendingInterrupt(CONTROL_TIMER_INST)==DL_TIMERG_IIDX_ZERO)tick=true;}

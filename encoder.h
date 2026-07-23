@@ -1,10 +1,5 @@
-#ifndef ENCODER_H_
-#define ENCODER_H_
-
+#ifndef ENCODER_H
+#define ENCODER_H
 #include <stdint.h>
-
-void Encoder_init(void);
-void Encoder_reset(void);
-void Encoder_sample(uint32_t *leftPulses, uint32_t *rightPulses);
-
+void Encoder_init(void); void Encoder_reset(void); uint32_t Encoder_averagePulses(void); void GROUP1_IRQHandler(void);
 #endif

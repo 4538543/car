@@ -1,11 +1,4 @@
-#ifndef INDICATOR_H_
-#define INDICATOR_H_
-
-void Indicator_init(void);
-void Indicator_start(void);
-void Indicator_finished(void);
-void Indicator_fault(void);
-void Indicator_idle(void);
-void Indicator_task1ms(void);
-
+#ifndef INDICATOR_H
+#define INDICATOR_H
+void Indicator_init(void); void Indicator_point(void); void Indicator_done(void); void Indicator_fault(void); void Indicator_task1ms(void);
 #endif
