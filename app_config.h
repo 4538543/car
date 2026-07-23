@@ -7,14 +7,13 @@
 #define HEADING_PERIOD_MS           10U
 #define LCD_PERIOD_MS              100U
 #define KEY_DEBOUNCE_MS             20U
-#define KEY_STARTUP_RELEASE_MS      100U
 #define START_GUARD_MS             300U
 #define BLACK_CONFIRM_MS            20U
 #define BLACK_SENSOR_MIN             2U
 #define MISSION_TIMEOUT_MS       20000U
 #define Q1_MIN_DISTANCE_MM        1050U
-#define BRAKE_REVERSE_MS           110U
-#define BRAKE_REVERSE_SPEED        220U
+#define BRAKE_REVERSE_MS           200U
+#define BRAKE_REVERSE_SPEED        450U
 #define Q3_POINT_HOLD_TIMEOUT_MS  3000U
 
 /* Calibrate on the actual floor: measured encoder pulses per travelled metre. */
