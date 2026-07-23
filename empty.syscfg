@@ -146,15 +146,15 @@ GPIO11.portSegment                        = "Upper";
 GPIO11.associatedPins.create(3);
 GPIO11.associatedPins[0].$name            = "KEY_Q2";
 GPIO11.associatedPins[0].direction        = "INPUT";
-GPIO11.associatedPins[0].internalResistor = "PULL_DOWN";
+GPIO11.associatedPins[0].internalResistor = "PULL_UP";
 GPIO11.associatedPins[0].pin.$assign      = "PB22";
 GPIO11.associatedPins[1].$name            = "KEY_Q3";
 GPIO11.associatedPins[1].direction        = "INPUT";
-GPIO11.associatedPins[1].internalResistor = "PULL_DOWN";
+GPIO11.associatedPins[1].internalResistor = "PULL_UP";
 GPIO11.associatedPins[1].pin.$assign      = "PB23";
 GPIO11.associatedPins[2].$name            = "KEY_Q4";
 GPIO11.associatedPins[2].direction        = "INPUT";
-GPIO11.associatedPins[2].internalResistor = "PULL_DOWN";
+GPIO11.associatedPins[2].internalResistor = "PULL_UP";
 GPIO11.associatedPins[2].pin.$assign      = "PB24";
 
 PWM1.$name                              = "PWM_LEFT";
