@@ -1,0 +1,26 @@
+# Build outputs
+Debug/
+Release/
+
+# Temporary/reference extraction workspace
+tmp/
+
+# Editor and OS noise
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs and temporary files
+*.log
+*.tmp
+*.bak
+
+# C/C++ build artifacts
+*.o
+*.obj
+*.d
+*.out
+*.map
+*.elf
+*.hex
+*.bin

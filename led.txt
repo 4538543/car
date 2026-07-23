@@ -1,0 +1,36 @@
+#include "led.h"
+#include "ti_msp_dl_config.h"
+
+void LED_Init(void)
+{
+    /*
+     * GPIO的方向、复用和输出模式已经由
+     * main()中的SYSCFG_DL_init()完成。
+     *
+     * 这里让LED上电后默认熄灭。
+     */
+    LED_Off();
+}
+
+void LED_On(void)
+{
+    /*
+     * 如果你的开发板LED为低电平点亮，
+     * 这里需要改成DL_GPIO_clearPins()。
+     */
+    DL_GPIO_setPins(LED_PORT, LED_led_PIN);
+}
+
+void LED_Off(void)
+{
+    /*
+     * 如果你的开发板LED为低电平点亮，
+     * 这里需要改成DL_GPIO_setPins()。
+     */
+    DL_GPIO_clearPins(LED_PORT, LED_led_PIN);
+}
+
+void LED_Toggle(void)
+{
+    DL_GPIO_togglePins(LED_PORT, LED_led_PIN);
+}
