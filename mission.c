@@ -101,12 +101,12 @@ static void processStartKey(Key_Event key)
          */
         beginMission(MISSION_Q1_RUN, 0);
     } else if (key == KEY_Q2) {
-        if (Gyro_valid()) {
-            beginMission(MISSION_Q2_AB, 0);
-        } else {
-            Motor_stop();
-            Indicator_fault();
-        }
+        /*
+         * Always accept the Q2 key. The drive loop falls back to equal wheel
+         * speeds until valid gyro frames arrive, which keeps a UART fault
+         * from being mistaken for a key fault.
+         */
+        beginMission(MISSION_Q2_AB, 0);
     }
 }
 
@@ -169,8 +169,8 @@ void Mission_task1ms(void)
             correction = headingCorrection(g_targetYaw);
         }
         Motor_drive(
-            (int16_t)(DRIVE_SPEED - correction),
-            (int16_t)(DRIVE_SPEED + correction));
+            (int16_t)(DRIVE_SPEED + correction),
+            (int16_t)(DRIVE_SPEED - correction));
     }
 
     blackAllowed = (g_stateMs > START_GUARD_MS);
