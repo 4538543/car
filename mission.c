@@ -8,12 +8,15 @@
 #include "lcd.h"
 #include "line_sensor.h"
 #include "motor.h"
+#include "q3_mission.h"
 
 typedef enum {
     MISSION_IDLE,
     MISSION_Q1_RUN,
     MISSION_Q2_AB,
     MISSION_Q2_CD,
+    MISSION_Q3_ACTIVE,
+    MISSION_REVERSE_BRAKE,
     MISSION_FINISHED,
     MISSION_FAULT
 } Mission_State;
@@ -81,7 +84,7 @@ static void beginMission(Mission_State next, int16_t targetYaw)
     Indicator_point();
 }
 
-static void finishMission(bool fault)
+static void finishImmediately(bool fault)
 {
     Motor_stop();
     g_state = fault ? MISSION_FAULT : MISSION_FINISHED;
@@ -92,27 +95,43 @@ static void finishMission(bool fault)
     }
 }
 
+static void beginReverseBrake(void)
+{
+    g_state = MISSION_REVERSE_BRAKE;
+    g_stateMs = 0U;
+    Motor_drive(-(int16_t)BRAKE_REVERSE_SPEED,
+                -(int16_t)BRAKE_REVERSE_SPEED);
+}
+
 static void processStartKey(Key_Event key)
 {
     if (key == KEY_Q1) {
-        /*
-         * Q1 can still run if the gyro is disconnected. When valid gyro
-         * packets exist, the same state automatically holds the boot 0 deg.
-         */
         beginMission(MISSION_Q1_RUN, 0);
     } else if (key == KEY_Q2) {
-        /*
-         * Always accept the Q2 key. The drive loop falls back to equal wheel
-         * speeds until valid gyro frames arrive, which keeps a UART fault
-         * from being mistaken for a key fault.
-         */
         beginMission(MISSION_Q2_AB, 0);
+    } else if (key == KEY_Q3) {
+        Q3Mission_start();
+        g_state = MISSION_Q3_ACTIVE;
+        g_stateMs = 0U;
     }
+}
+
+static void driveStraight(void)
+{
+    int16_t correction = 0;
+
+    if (Gyro_valid()) {
+        correction = headingCorrection(g_targetYaw);
+    }
+    Motor_drive(
+        (int16_t)(DRIVE_SPEED + correction),
+        (int16_t)(DRIVE_SPEED - correction));
 }
 
 void Mission_init(void)
 {
     Motor_stop();
+    Q3Mission_init();
     g_state = MISSION_IDLE;
     g_stateMs = 0U;
     g_blackMs = 0U;
@@ -131,7 +150,6 @@ void Mission_beginQ2_CD(void)
 void Mission_task1ms(void)
 {
     Key_Event key = Keys_task1ms();
-    bool blackAllowed;
 
     Indicator_task1ms();
     if (++g_lcdMs >= LCD_PERIOD_MS) {
@@ -139,10 +157,6 @@ void Mission_task1ms(void)
         Lcd_showYaw(Gyro_yawDeciDeg());
     }
 
-    /*
-     * Do not discard the first key after a completed mission. It must both
-     * leave the terminal state and start the newly selected mission.
-     */
     if (g_state == MISSION_FINISHED || g_state == MISSION_FAULT) {
         Motor_stop();
         if (key == KEY_NONE) {
@@ -157,29 +171,38 @@ void Mission_task1ms(void)
         return;
     }
 
+    if (g_state == MISSION_Q3_ACTIVE) {
+        Q3Mission_Result result = Q3Mission_task1ms();
+        if (result == Q3_MISSION_DONE) {
+            g_state = MISSION_FINISHED;
+        } else if (result == Q3_MISSION_FAULT) {
+            g_state = MISSION_FAULT;
+        }
+        return;
+    }
+
+    if (g_state == MISSION_REVERSE_BRAKE) {
+        if (++g_stateMs >= BRAKE_REVERSE_MS) {
+            finishImmediately(false);
+        }
+        return;
+    }
+
     if (++g_stateMs > MISSION_TIMEOUT_MS) {
-        finishMission(true);
+        finishImmediately(true);
         return;
     }
 
     if ((g_stateMs % HEADING_PERIOD_MS) == 0U) {
-        int16_t correction = 0;
-
-        if (Gyro_valid()) {
-            correction = headingCorrection(g_targetYaw);
-        }
-        Motor_drive(
-            (int16_t)(DRIVE_SPEED + correction),
-            (int16_t)(DRIVE_SPEED - correction));
+        driveStraight();
     }
 
-    blackAllowed = (g_stateMs > START_GUARD_MS);
-    if (blackAllowed && LineSensor_blackLine()) {
+    if (g_stateMs > START_GUARD_MS && LineSensor_blackLine()) {
         if (g_blackMs < BLACK_CONFIRM_MS) {
             g_blackMs++;
         }
         if (g_blackMs >= BLACK_CONFIRM_MS) {
-            finishMission(false);
+            beginReverseBrake();
         }
     } else {
         g_blackMs = 0U;

@@ -13,11 +13,15 @@
 #define BLACK_SENSOR_MIN             2U
 #define MISSION_TIMEOUT_MS       20000U
 #define Q1_MIN_DISTANCE_MM        1050U
+#define BRAKE_REVERSE_MS           110U
+#define BRAKE_REVERSE_SPEED        220U
+#define Q3_POINT_HOLD_TIMEOUT_MS  3000U
 
 /* Calibrate on the actual floor: measured encoder pulses per travelled metre. */
 #define ENCODER_PULSES_PER_M       800U
 #define DRIVE_SPEED                360U
 #define TURN_SPEED                 260U
+#define TURN_MIN_SPEED             115U
 #define HEADING_KP_NUM               8
 #define HEADING_KP_DEN              10
 #define HEADING_KI_DEN             500
@@ -26,5 +30,9 @@
 #define HEADING_LIMIT              140
 #define TURN_TOLERANCE_DECI_DEG     20
 #define TURN_STABLE_MS             180U
+
+#define Q3_AC_TARGET_DECI_DEG       380
+#define Q3_B_START_DECI_DEG        1800
+#define Q3_BD_TARGET_DECI_DEG      1420
 
 #endif
