@@ -29,15 +29,17 @@
 #define Q3_STAGE2_SPEED            260U
 #define Q3_STAGE3_SPEED            160U
 #define TURN_SPEED                 260U
-#define TURN_MIN_SPEED             115U
+#define TURN_SLOW_SPEED            130U
+#define TURN_MIN_SPEED              65U
 #define HEADING_KP_NUM               8
 #define HEADING_KP_DEN              10
 #define HEADING_KI_DEN             500
 #define HEADING_KD_NUM               2
 #define HEADING_INTEGRAL_LIMIT    3000
 #define HEADING_LIMIT              140
-#define TURN_TOLERANCE_DECI_DEG     20
-#define TURN_STABLE_MS             180U
+#define TURN_SLOW_ZONE_DECI_DEG    100
+#define TURN_TOLERANCE_DECI_DEG     30
+#define TURN_STABLE_MS              80U
 
 #define Q3_AC_TARGET_DECI_DEG       380
 #define Q3_B_START_DECI_DEG        1800

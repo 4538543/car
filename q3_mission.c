@@ -122,7 +122,11 @@ static bool updateTurn(int16_t target, Q3_State next)
     }
 
     g_stableMs = 0U;
-    command = pidCorrection(target, TURN_SPEED);
+    command = pidCorrection(
+        target,
+        (absolute16(error) <= TURN_SLOW_ZONE_DECI_DEG)
+        ? TURN_SLOW_SPEED
+        : TURN_SPEED);
     if (command > 0 && command < TURN_MIN_SPEED) {
         command = TURN_MIN_SPEED;
     } else if (command < 0 && command > -(int16_t)TURN_MIN_SPEED) {
