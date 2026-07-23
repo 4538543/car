@@ -1,6 +1,7 @@
 #include "q3_mission.h"
 
 #include "app_config.h"
+#include "encoder.h"
 #include "gyro.h"
 #include "indicator.h"
 #include "line_sensor.h"
@@ -88,6 +89,9 @@ static void enterState(Q3_State next, int16_t target)
     g_blackMs = 0U;
     g_stableMs = 0U;
     resetPid();
+    if (next == Q3_AC_DRIVE || next == Q3_BD_DRIVE) {
+        Encoder_reset();
+    }
 }
 
 static void fail(void)
@@ -131,10 +135,22 @@ static bool updateTurn(int16_t target, Q3_State next)
 static void driveStraight(void)
 {
     int16_t correction = pidCorrection(g_targetYaw, HEADING_LIMIT);
+    uint32_t distanceMm = Encoder_averageDistanceMm();
+    uint16_t speed;
+
+    if (distanceMm >=
+        (Q3_DIAGONAL_DISTANCE_MM - Q3_STAGE3_REMAINING_MM)) {
+        speed = Q3_STAGE3_SPEED;
+    } else if (distanceMm >=
+               (Q3_DIAGONAL_DISTANCE_MM - Q3_STAGE2_REMAINING_MM)) {
+        speed = Q3_STAGE2_SPEED;
+    } else {
+        speed = DRIVE_SPEED;
+    }
 
     Motor_drive(
-        (int16_t)(DRIVE_SPEED + correction),
-        (int16_t)(DRIVE_SPEED - correction));
+        (int16_t)(speed + correction),
+        (int16_t)(speed - correction));
 }
 
 static void updateBlackLine(void)

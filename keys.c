@@ -5,7 +5,9 @@
 
 typedef struct {
     uint8_t pressedMs;
+    uint8_t releasedMs;
     uint8_t eventSent;
+    uint8_t armed;
 } Key_State;
 
 static Key_State g_keys[4];
@@ -16,7 +18,9 @@ void Keys_init(void)
 
     for (i = 0U; i < 4U; i++) {
         g_keys[i].pressedMs = 0U;
+        g_keys[i].releasedMs = 0U;
         g_keys[i].eventSent = 0U;
+        g_keys[i].armed = 0U;
     }
 }
 
@@ -36,11 +40,25 @@ Key_Event Keys_task1ms(void)
     uint8_t i;
 
     /*
-     * Each key is debounced independently. A held key at the end of LCD
-     * initialization is accepted after 20 ms, and a fault on one key can no
-     * longer lock every mission key.
+     * Each key arms independently after being released for 100 ms. This
+     * rejects startup-low glitches without allowing one faulty key to lock
+     * every mission key.
      */
     for (i = 0U; i < 4U; i++) {
+        if (g_keys[i].armed == 0U) {
+            if (pressed[i] == 0U) {
+                if (g_keys[i].releasedMs < 100U) {
+                    g_keys[i].releasedMs++;
+                }
+                if (g_keys[i].releasedMs >= 100U) {
+                    g_keys[i].armed = 1U;
+                }
+            } else {
+                g_keys[i].releasedMs = 0U;
+            }
+            continue;
+        }
+
         if (pressed[i] != 0U) {
             if (g_keys[i].pressedMs < KEY_DEBOUNCE_MS) {
                 g_keys[i].pressedMs++;

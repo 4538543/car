@@ -25,6 +25,7 @@ static Mission_State g_state;
 static uint32_t g_stateMs;
 static uint32_t g_blackMs;
 static uint32_t g_lcdMs;
+static bool g_approaching;
 static int16_t g_targetYaw;
 static int16_t g_previousError;
 static int32_t g_integral;
@@ -79,6 +80,7 @@ static void beginMission(Mission_State next, int16_t targetYaw)
     g_targetYaw = targetYaw;
     g_stateMs = 0U;
     g_blackMs = 0U;
+    g_approaching = false;
     Encoder_reset();
     resetHeadingController();
     Indicator_point();
@@ -116,7 +118,7 @@ static void processStartKey(Key_Event key)
     }
 }
 
-static void driveStraight(void)
+static void driveStraight(uint16_t speed)
 {
     int16_t correction = 0;
 
@@ -124,8 +126,8 @@ static void driveStraight(void)
         correction = headingCorrection(g_targetYaw);
     }
     Motor_drive(
-        (int16_t)(DRIVE_SPEED + correction),
-        (int16_t)(DRIVE_SPEED - correction));
+        (int16_t)(speed + correction),
+        (int16_t)(speed - correction));
 }
 
 void Mission_init(void)
@@ -136,6 +138,7 @@ void Mission_init(void)
     g_stateMs = 0U;
     g_blackMs = 0U;
     g_lcdMs = 0U;
+    g_approaching = false;
     g_targetYaw = 0;
     resetHeadingController();
 }
@@ -193,8 +196,12 @@ void Mission_task1ms(void)
         return;
     }
 
-    if ((g_stateMs % HEADING_PERIOD_MS) == 0U) {
-        driveStraight();
+    /* Q1 slows near the end of its fixed 1.05 m segment. */
+    if (g_state == MISSION_Q1_RUN && !g_approaching) {
+        if (Encoder_averageDistanceMm() >=
+            (Q1_MIN_DISTANCE_MM - SLOWDOWN_DISTANCE_MM)) {
+            g_approaching = true;
+        }
     }
 
     if (g_stateMs > START_GUARD_MS && LineSensor_blackLine()) {
@@ -203,8 +210,17 @@ void Mission_task1ms(void)
         }
         if (g_blackMs >= BLACK_CONFIRM_MS) {
             beginReverseBrake();
+            return;
         }
     } else {
         g_blackMs = 0U;
+    }
+
+    if ((g_stateMs % HEADING_PERIOD_MS) == 0U) {
+        uint16_t speed =
+            (g_state == MISSION_Q1_RUN && g_approaching)
+            ? APPROACH_SPEED
+            : DRIVE_SPEED;
+        driveStraight(speed);
     }
 }

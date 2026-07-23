@@ -12,13 +12,21 @@
 #define BLACK_SENSOR_MIN             2U
 #define MISSION_TIMEOUT_MS       20000U
 #define Q1_MIN_DISTANCE_MM        1050U
-#define BRAKE_REVERSE_MS           200U
-#define BRAKE_REVERSE_SPEED        450U
+#define Q3_DIAGONAL_DISTANCE_MM   1281U
+#define SLOWDOWN_DISTANCE_MM       250U
+#define Q3_STAGE2_REMAINING_MM     300U
+#define Q3_STAGE3_REMAINING_MM     120U
+#define BRAKE_REVERSE_MS            80U
+#define BRAKE_REVERSE_SPEED        220U
 #define Q3_POINT_HOLD_TIMEOUT_MS  3000U
 
-/* Calibrate on the actual floor: measured encoder pulses per travelled metre. */
-#define ENCODER_PULSES_PER_M       800U
+/* Encoder is counted on each channel-A rising edge. */
+#define WHEEL_DIAMETER_MM           65U
+#define ENCODER_PULSES_PER_REV     250U
 #define DRIVE_SPEED                360U
+#define APPROACH_SPEED             210U
+#define Q3_STAGE2_SPEED            290U
+#define Q3_STAGE3_SPEED            210U
 #define TURN_SPEED                 260U
 #define TURN_MIN_SPEED             115U
 #define HEADING_KP_NUM               8
