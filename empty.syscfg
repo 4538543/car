@@ -119,6 +119,7 @@ GPIO8.associatedPins[0].$name        = "LCD_BLK";
 GPIO8.associatedPins[0].initialValue = "SET";
 GPIO8.associatedPins[0].pin.$assign  = "PA16";
 GPIO8.associatedPins[1].$name        = "LCD_CLK";
+GPIO8.associatedPins[1].pin.$assign  = "PA17";
 
 GPIO9.$name                         = "LCD_CTRL";
 GPIO9.port                          = "PORTB";
@@ -192,6 +193,7 @@ TIMER1.$name              = "CONTROL_TIMER";
 TIMER1.peripheral.$assign = "TIMG12";
 
 UART1.$name                            = "GYRO_UART";
+UART1.targetBaudRate                   = 9600;
 UART1.enabledInterrupts                = ["RX"];
 UART1.peripheral.rxPin.$assign         = "PA11";
 UART1.peripheral.txPin.$assign         = "PA10";
@@ -213,6 +215,5 @@ UART1.rxPinConfig.passedPeripheralType = scripting.forceWrite("Digital");
 Board.peripheral.$suggestSolution            = "DEBUGSS";
 Board.peripheral.swclkPin.$suggestSolution   = "PA20";
 Board.peripheral.swdioPin.$suggestSolution   = "PA19";
-GPIO8.associatedPins[1].pin.$suggestSolution = "PA17";
 SYSCTL.peripheral.$suggestSolution           = "SYSCTL";
 UART1.peripheral.$suggestSolution            = "UART0";
