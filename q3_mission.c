@@ -155,9 +155,16 @@ static void driveStraight(void)
 
 static void updateBlackLine(void)
 {
-    if (g_stateMs > START_GUARD_MS && LineSensor_blackLine()) {
+    bool reachedDistance =
+        Encoder_averageDistanceMm() >= Q3_DIAGONAL_DISTANCE_MM;
+    bool reachedBlackLine =
+        g_stateMs > START_GUARD_MS && LineSensor_blackLine();
+
+    if (reachedDistance || reachedBlackLine) {
         if (g_blackMs < BLACK_CONFIRM_MS) {
-            g_blackMs++;
+            g_blackMs = reachedDistance
+                ? BLACK_CONFIRM_MS
+                : g_blackMs + 1U;
         }
         if (g_blackMs >= BLACK_CONFIRM_MS) {
             g_brakeAfterAc = (g_state == Q3_AC_DRIVE);

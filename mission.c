@@ -204,6 +204,13 @@ void Mission_task1ms(void)
         }
     }
 
+    /* Stop at the fixed endpoint even when the black line is absent. */
+    if (g_state == MISSION_Q1_RUN &&
+        Encoder_averageDistanceMm() >= Q1_MIN_DISTANCE_MM) {
+        beginReverseBrake();
+        return;
+    }
+
     if (g_stateMs > START_GUARD_MS && LineSensor_blackLine()) {
         if (g_blackMs < BLACK_CONFIRM_MS) {
             g_blackMs++;

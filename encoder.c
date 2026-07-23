@@ -32,7 +32,13 @@ uint32_t Encoder_averagePulses(void)
     __disable_irq();
     average = (g_leftPulses + g_rightPulses) / 2U;
     __enable_irq();
-    return average;
+
+    /*
+     * GPIO counts channel-A rising edges (about 260/rev). Normalize this
+     * raw count to the motor's documented quadrature x4 convention
+     * (1040/rev), matching ENCODER_PULSES_PER_REV.
+     */
+    return average * ENCODER_X4_SCALE;
 }
 
 uint32_t Encoder_averageDistanceMm(void)
