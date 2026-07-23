@@ -2,6 +2,7 @@
 #include "gyro.h"
 #include "keys.h"
 #include "lcd.h"
+#include "line_sensor.h"
 #include "mission.h"
 #include "motor.h"
 #include "ti_msp_dl_config.h"
@@ -19,6 +20,7 @@ int main(void)
     Keys_init();
     Gyro_init();
     Encoder_init();
+    LineSensor_init();
     Lcd_init();
     Mission_init();
 

@@ -10,8 +10,17 @@ static void one(GPTIMER_Regs *t, DL_TIMER_CC_INDEX cc, uint16_t duty) {
     DL_Timer_setCaptureCompareValue(t, compare(t, duty), cc);
 }
 void Motor_init(void) {
-    /* SysConfig's PWM default duty may be non-zero.  Establish the safe
-       electrical state only after both timer counters are available. */
+    /*
+     * Disable the TB6612 before either PWM counter can toggle. This prevents
+     * an initialization pulse from reaching the motors.
+     */
+    DL_GPIO_clearPins(GPIOB, MOTOR_CTRL_MOTOR_A_IN1_PIN |
+                              MOTOR_CTRL_MOTOR_A_IN2_PIN |
+                              MOTOR_CTRL_MOTOR_B_IN1_PIN |
+                              MOTOR_CTRL_MOTOR_B_IN2_PIN |
+                              MOTOR_CTRL_MOTOR_STBY_PIN);
+    one(PWM_LEFT_INST, GPIO_PWM_LEFT_C1_IDX, 0U);
+    one(PWM_RIGHT_INST, GPIO_PWM_RIGHT_C0_IDX, 0U);
     DL_Timer_startCounter(PWM_LEFT_INST);
     DL_Timer_startCounter(PWM_RIGHT_INST);
     Motor_stop();

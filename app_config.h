@@ -7,6 +7,7 @@
 #define HEADING_PERIOD_MS           10U
 #define LCD_PERIOD_MS              100U
 #define KEY_DEBOUNCE_MS             20U
+#define KEY_STARTUP_RELEASE_MS      100U
 #define START_GUARD_MS             300U
 #define BLACK_CONFIRM_MS            20U
 #define BLACK_SENSOR_MIN             5U

@@ -158,7 +158,7 @@ GPIO11.associatedPins[2].internalResistor = "PULL_DOWN";
 GPIO11.associatedPins[2].pin.$assign      = "PB24";
 
 PWM1.$name                              = "PWM_LEFT";
-PWM1.dutyArgs                           = "[50,0,0,0]";
+PWM1.dutyArgs                           = "[0,0,0,0]";
 PWM1.pwmMode                            = "EDGE_ALIGN_UP";
 PWM1.ccIndex                            = [1];
 PWM1.timerCount                         = 1600;
