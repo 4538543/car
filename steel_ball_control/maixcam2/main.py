@@ -709,6 +709,7 @@ while not app.need_exit():
                 and len(recent_centers) >= CALIBRATION_SAMPLE_COUNT
                 and calibration_valid(calibration_points)
             ):
+                # CAP stores and publishes the target; STM32 K4 starts task 3.
                 capture_center = (
                     median([center[0] for center in recent_centers]),
                     median([center[1] for center in recent_centers]),
@@ -1192,4 +1193,3 @@ while not app.need_exit():
                 jpeg_stream = None
 
     dis.show(output_img)
-

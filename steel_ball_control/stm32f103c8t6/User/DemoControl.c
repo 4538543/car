@@ -126,6 +126,33 @@ void DemoControl_StartCenter(uint32_t now_ms)
 	Stepper_SetTargetPosition(0);
 }
 
+void DemoControl_StartCapturedTarget(
+	uint16_t target_normalized, uint32_t now_ms)
+{
+	if ((Stepper_IsEnabled() == 0U) ||
+		(target_normalized > 1000U))
+	{
+		return;
+	}
+
+	g_status.state = DEMO_STATE_WAIT_VISION;
+	g_status.target_milli_cm =
+		PositionToMilliCm(target_normalized);
+	g_status.target_normalized = target_normalized;
+	g_status.desired_motor_steps = 0;
+	g_status.elapsed_ms = 0U;
+	g_status.vision_valid = 0U;
+	g_status.passed_5_seconds = 0U;
+	g_start_ms = now_ms;
+	g_last_valid_local_ms = now_ms;
+	g_arrival_stable_ms = 0U;
+	g_recovery_frames = 0U;
+	g_has_sample = 0U;
+	g_state_after_vision = DEMO_STATE_HOLD_CAPTURED;
+	BallControl_ResetIntegrators();
+	Stepper_SetTargetPosition(0);
+}
+
 void DemoControl_Abort(void)
 {
 	g_status.state = DEMO_STATE_IDLE;
@@ -156,7 +183,8 @@ void DemoControl_OnVisionFrame(
 		if ((g_status.state == DEMO_STATE_TO_PLUS5) ||
 			(g_status.state == DEMO_STATE_TO_MINUS5) ||
 			(g_status.state == DEMO_STATE_HOLD_MINUS5) ||
-			(g_status.state == DEMO_STATE_HOLD_CENTER))
+			(g_status.state == DEMO_STATE_HOLD_CENTER) ||
+			(g_status.state == DEMO_STATE_HOLD_CAPTURED))
 		{
 			/* Do not hold an old tilt while vision is uncertain. */
 			g_status.desired_motor_steps = 0;
@@ -194,7 +222,8 @@ void DemoControl_OnVisionFrame(
 	if ((g_status.state != DEMO_STATE_TO_PLUS5) &&
 		(g_status.state != DEMO_STATE_TO_MINUS5) &&
 		(g_status.state != DEMO_STATE_HOLD_MINUS5) &&
-		(g_status.state != DEMO_STATE_HOLD_CENTER))
+		(g_status.state != DEMO_STATE_HOLD_CENTER) &&
+		(g_status.state != DEMO_STATE_HOLD_CAPTURED))
 	{
 		return;
 	}
@@ -228,9 +257,13 @@ void DemoControl_OnVisionFrame(
 		g_status.target_milli_cm,
 		(g_status.state == DEMO_STATE_HOLD_CENTER) ?
 			APP_OUTER_KP_MILLI_PER_S :
+		(g_status.state == DEMO_STATE_HOLD_CAPTURED) ?
+			APP_TASK3_OUTER_KP_MILLI_PER_S :
 			APP_TASK1_OUTER_KP_MILLI_PER_S,
 		(g_status.state == DEMO_STATE_HOLD_CENTER) ?
 			APP_INNER_KP_MILLI_STEP_PER_CMPS :
+		(g_status.state == DEMO_STATE_HOLD_CAPTURED) ?
+			APP_TASK3_INNER_KP_MILLI_STEP_PER_CMPS :
 			APP_TASK1_INNER_KP_MILLI_STEP_PER_CMPS,
 		dt_ms);
 	g_status.ball_position_milli_cm =
@@ -307,7 +340,8 @@ void DemoControl_Service(uint32_t now_ms)
 	if ((g_status.state == DEMO_STATE_TO_PLUS5) ||
 		(g_status.state == DEMO_STATE_TO_MINUS5) ||
 		(g_status.state == DEMO_STATE_HOLD_MINUS5) ||
-		(g_status.state == DEMO_STATE_HOLD_CENTER))
+		(g_status.state == DEMO_STATE_HOLD_CENTER) ||
+		(g_status.state == DEMO_STATE_HOLD_CAPTURED))
 	{
 		if ((uint32_t)(now_ms -
 			g_last_valid_local_ms) >
@@ -320,6 +354,7 @@ void DemoControl_Service(uint32_t now_ms)
 
 	if ((g_status.state != DEMO_STATE_HOLD_MINUS5) &&
 		(g_status.state != DEMO_STATE_HOLD_CENTER) &&
+		(g_status.state != DEMO_STATE_HOLD_CAPTURED) &&
 		(g_status.elapsed_ms >
 		 APP_DEMO_TOTAL_TIMEOUT_MS))
 	{

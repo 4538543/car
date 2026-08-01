@@ -3,7 +3,7 @@
 
 /*
  * Eight-key module connections used in phase 1:
- *   K1 -> PB12, K2 -> PB13, K3 -> PB14
+ *   K1 -> PB12, K2 -> PB13, K3 -> PB14, K4 -> PB15
  * The module is powered from 3.3 V and has onboard pull-up resistors.
  * A pressed key therefore reads as logic low.
  */
@@ -15,7 +15,8 @@ void Key_Init(void)
 
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
 	GPIO_InitStructure.GPIO_Pin =
-		GPIO_Pin_12 | GPIO_Pin_13 | GPIO_Pin_14;
+		GPIO_Pin_12 | GPIO_Pin_13 | GPIO_Pin_14 |
+		GPIO_Pin_15;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
 	GPIO_Init(GPIOB, &GPIO_InitStructure);
 }
@@ -54,6 +55,10 @@ uint8_t Key_GetNum(void)
 	if (Key_ReadPressed(GPIO_Pin_14))
 	{
 		return 3;
+	}
+	if (Key_ReadPressed(GPIO_Pin_15))
+	{
+		return 4;
 	}
 
 	return 0;

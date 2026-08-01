@@ -19,6 +19,8 @@ static char *StateText(DemoState state)
 			return "HOLD ";
 		case DEMO_STATE_HOLD_CENTER:
 			return "CENTR";
+		case DEMO_STATE_HOLD_CAPTURED:
+			return "CAPTG";
 		case DEMO_STATE_FAULT:
 			return "FAULT";
 		default:
@@ -33,6 +35,8 @@ int main(void)
 	uint32_t last_display_ms;
 	uint16_t last_received_position;
 	uint8_t has_received_position;
+	uint16_t captured_target_position;
+	uint8_t captured_target_available;
 	MaixcamBallData ball;
 	DemoStatus status;
 
@@ -50,6 +54,8 @@ int main(void)
 	last_display_ms = 0U;
 	last_received_position = 0U;
 	has_received_position = 0U;
+	captured_target_position = 0U;
+	captured_target_available = 0U;
 
 	while (1)
 	{
@@ -65,6 +71,16 @@ int main(void)
 			{
 				last_received_position = ball.position;
 				has_received_position = 1U;
+			}
+			if (ball.target_available != 0U)
+			{
+				captured_target_position =
+					ball.target_position;
+				captured_target_available = 1U;
+			}
+			else
+			{
+				captured_target_available = 0U;
 			}
 			DemoControl_OnVisionFrame(&ball, now_ms);
 		}
@@ -100,6 +116,18 @@ int main(void)
 				DemoControl_Abort();
 			}
 			Stepper_SetEnabled(!Stepper_IsEnabled());
+		}
+		else if (key == 4U)
+		{
+			if (DemoControl_IsActive() != 0U)
+			{
+				DemoControl_Abort();
+			}
+			else if (captured_target_available != 0U)
+			{
+				DemoControl_StartCapturedTarget(
+					captured_target_position, now_ms);
+			}
 		}
 
 		if ((uint32_t)(now_ms - last_display_ms) >= 100U)
