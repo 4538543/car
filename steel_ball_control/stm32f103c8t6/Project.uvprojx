@@ -696,6 +696,16 @@
               <FilePath>.\Hardware\MaixcamUart.c</FilePath>
             </File>
             <File>
+              <FileName>BallControl.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\User\BallControl.c</FilePath>
+            </File>
+            <File>
+              <FileName>DemoControl.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\User\DemoControl.c</FilePath>
+            </File>
+            <File>
               <FileName>Stepper.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Hardware\Stepper.h</FilePath>

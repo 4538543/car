@@ -3,56 +3,105 @@
 #include "Key.h"
 #include "Stepper.h"
 #include "MaixcamUart.h"
+#include "DemoControl.h"
+
+static char *StateText(DemoState state)
+{
+	switch (state)
+	{
+		case DEMO_STATE_WAIT_VISION:
+			return "WAIT ";
+		case DEMO_STATE_TO_PLUS5:
+			return "TO+5 ";
+		case DEMO_STATE_TO_MINUS5:
+			return "TO-5 ";
+		case DEMO_STATE_HOLD_MINUS5:
+			return "HOLD ";
+		case DEMO_STATE_FAULT:
+			return "FAULT";
+		default:
+			return "IDLE ";
+	}
+}
 
 int main(void)
 {
 	uint8_t key;
+	uint32_t now_ms;
 	uint32_t last_display_ms;
 	MaixcamBallData ball;
+	DemoStatus status;
 
 	OLED_Init();
 	Key_Init();
 	Stepper_Init();
 	MaixcamUart_Init();
+	DemoControl_Init();
 
 	OLED_Clear();
-	OLED_ShowString(1, 1, "TIMER STEP TEST");
-	OLED_ShowString(2, 1, "P:+000 T:+000");
-	OLED_ShowString(3, 1, "V:+000 EN:0");
-	OLED_ShowString(4, 1, "K1+ K2- K3EN");
+	OLED_ShowString(1, 1, "S:IDLE  E:0");
+	OLED_ShowString(2, 1, "B:---- T:----");
+	OLED_ShowString(3, 1, "M:+000 P:+000");
+	OLED_ShowString(4, 1, "K1RUN K2STOP");
 	last_display_ms = 0U;
 
 	while (1)
 	{
-		/* Keep draining vision UART while motor timing runs in hardware. */
-		MaixcamUart_Poll(&ball);
+		now_ms = Stepper_GetTickMs();
+		while (MaixcamUart_Poll(&ball) != 0U)
+		{
+			DemoControl_OnVisionFrame(&ball, now_ms);
+		}
+		DemoControl_Service(now_ms);
 
 		key = Key_GetNum();
 		if (key == 1U)
 		{
-			Stepper_MoveRelative(STEPPER_TEST_STEPS);
+			if (DemoControl_IsActive() != 0U)
+			{
+				DemoControl_Abort();
+			}
+			else
+			{
+				DemoControl_Start(now_ms);
+			}
 		}
 		else if (key == 2U)
 		{
-			Stepper_MoveRelative(-STEPPER_TEST_STEPS);
+			DemoControl_Abort();
 		}
 		else if (key == 3U)
 		{
+			if (DemoControl_IsActive() != 0U)
+			{
+				DemoControl_Abort();
+			}
 			Stepper_SetEnabled(!Stepper_IsEnabled());
 		}
 
-		if ((uint32_t)(Stepper_GetTickMs() - last_display_ms) >=
-			100U)
+		if ((uint32_t)(now_ms - last_display_ms) >= 100U)
 		{
-			last_display_ms = Stepper_GetTickMs();
-			OLED_ShowSignedNum(
-				2, 3, Stepper_GetCommandPosition(), 3);
-			OLED_ShowSignedNum(
-				2, 10, Stepper_GetTargetPosition(), 3);
-			OLED_ShowSignedNum(
-				3, 3, Stepper_GetCommandSpeedSps(), 3);
+			last_display_ms = now_ms;
+			status = DemoControl_GetStatus();
+			OLED_ShowString(1, 3, StateText(status.state));
+			OLED_ShowNum(1, 11, Stepper_IsEnabled(), 1);
+			if (status.vision_valid != 0U)
+			{
+				OLED_ShowNum(
+					2, 3,
+					status.ball_position_normalized, 4);
+			}
+			else
+			{
+				OLED_ShowString(2, 3, "----");
+			}
 			OLED_ShowNum(
-				3, 11, Stepper_IsEnabled(), 1);
+				2, 10, status.target_normalized, 4);
+			OLED_ShowSignedNum(
+				3, 3, status.desired_motor_steps, 3);
+			OLED_ShowSignedNum(
+				3, 10,
+				Stepper_GetCommandPosition(), 3);
 		}
 	}
 }
