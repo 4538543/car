@@ -5,7 +5,6 @@
 
 #define FLAG_VALID          0x01U
 #define FLAG_CALIBRATED     0x04U
-#define FLAG_TRACK_HELD     0x08U
 
 static DemoStatus g_status;
 static uint32_t g_start_ms;
@@ -33,7 +32,6 @@ static uint8_t FrameUsable(const MaixcamBallData *ball)
 		(ball->available == 0U) ||
 		((ball->flags & FLAG_VALID) == 0U) ||
 		((ball->flags & FLAG_CALIBRATED) == 0U) ||
-		((ball->flags & FLAG_TRACK_HELD) != 0U) ||
 		(ball->position > 1000U))
 	{
 		return 0U;
