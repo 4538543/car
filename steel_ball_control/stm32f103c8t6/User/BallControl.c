@@ -68,8 +68,7 @@ void BallControl_Reset(int32_t measured_position_milli_cm)
 BallControlOutput BallControl_Update(
 	int32_t measured_position_milli_cm,
 	int32_t target_position_milli_cm,
-	int32_t outer_kp_milli_per_s,
-	int32_t inner_kp_milli_step_per_cmps,
+	const BallControlGains *gains,
 	uint32_t dt_ms)
 {
 	BallControlOutput output;
@@ -153,13 +152,13 @@ BallControlOutput BallControl_Update(
 			APP_OUTER_INTEGRAL_LIMIT_MCM_MS);
 
 		outer_p_milli_cmps =
-			((int64_t)outer_kp_milli_per_s *
+			((int64_t)gains->outer_kp_milli_per_s *
 			 (int64_t)position_error_milli_cm) / 1000LL;
 		outer_i_milli_cmps =
-			((int64_t)APP_OUTER_KI_MILLI_PER_S2 *
+			((int64_t)gains->outer_ki_milli_per_s2 *
 			 position_integral_candidate) / 1000000LL;
 		outer_d_milli_cmps =
-			((int64_t)APP_OUTER_KD_MILLI *
+			((int64_t)gains->outer_kd_milli *
 			 (int64_t)g_filtered_velocity_milli_cmps) / 1000LL;
 
 		outer_unsaturated_milli_cmps =
@@ -176,7 +175,7 @@ BallControlOutput BallControl_Update(
 			position_integral_candidate =
 				g_position_integral_mcm_ms;
 			outer_i_milli_cmps =
-				((int64_t)APP_OUTER_KI_MILLI_PER_S2 *
+				((int64_t)gains->outer_ki_milli_per_s2 *
 				 position_integral_candidate) / 1000000LL;
 			outer_unsaturated_milli_cmps =
 				outer_p_milli_cmps +
@@ -201,13 +200,13 @@ BallControlOutput BallControl_Update(
 			APP_INNER_INTEGRAL_LIMIT_MCMPS_MS);
 
 		inner_p_milli_step =
-			((int64_t)inner_kp_milli_step_per_cmps *
+			((int64_t)gains->inner_kp_milli_step_per_cmps *
 			 (int64_t)velocity_error_milli_cmps) / 1000LL;
 		inner_i_milli_step =
-			((int64_t)APP_INNER_KI_MILLI_STEP_PER_CM *
+			((int64_t)gains->inner_ki_milli_step_per_cm *
 			 velocity_integral_candidate) / 1000000LL;
 		inner_d_milli_step =
-			((int64_t)APP_INNER_KD_MILLI_STEP_PER_CMPS2 *
+			((int64_t)gains->inner_kd_milli_step_per_cmps2 *
 			 (int64_t)measured_acceleration) / 1000LL;
 
 		inner_unsaturated_milli_step =
@@ -226,7 +225,7 @@ BallControlOutput BallControl_Update(
 			velocity_integral_candidate =
 				g_velocity_integral_mcmps_ms;
 			inner_i_milli_step =
-				((int64_t)APP_INNER_KI_MILLI_STEP_PER_CM *
+				((int64_t)gains->inner_ki_milli_step_per_cm *
 				 velocity_integral_candidate) / 1000000LL;
 			inner_unsaturated_milli_step =
 				inner_p_milli_step +
