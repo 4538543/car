@@ -9,9 +9,9 @@
  */
 #define STEPPER_TEST_STEPS                 20
 #define STEPPER_SOFT_LIMIT_STEPS           100
-#define STEPPER_MAX_SPEED_SPS              200
+#define STEPPER_MAX_SPEED_SPS              800
 #define STEPPER_MIN_SPEED_SPS              20
-#define STEPPER_ACCEL_SPS2                 500
+#define STEPPER_ACCEL_SPS2                 2000
 #define STEPPER_FOLLOW_GAIN_SPS_PER_STEP   10
 
 void Stepper_Init(void);
