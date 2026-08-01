@@ -1,0 +1,6 @@
+stm32f103c8t6/Objects/
+stm32f103c8t6/Listings/
+stm32f103c8t6/*.uvguix.*
+stm32f103c8t6/*.log
+__pycache__/
+*.pyc
