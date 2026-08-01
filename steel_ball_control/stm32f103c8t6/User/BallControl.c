@@ -69,6 +69,7 @@ BallControlOutput BallControl_Update(
 	int32_t measured_position_milli_cm,
 	int32_t target_position_milli_cm,
 	int32_t outer_kp_milli_per_s,
+	int32_t inner_kp_milli_step_per_cmps,
 	uint32_t dt_ms)
 {
 	BallControlOutput output;
@@ -200,7 +201,7 @@ BallControlOutput BallControl_Update(
 			APP_INNER_INTEGRAL_LIMIT_MCMPS_MS);
 
 		inner_p_milli_step =
-			((int64_t)APP_INNER_KP_MILLI_STEP_PER_CMPS *
+			((int64_t)inner_kp_milli_step_per_cmps *
 			 (int64_t)velocity_error_milli_cmps) / 1000LL;
 		inner_i_milli_step =
 			((int64_t)APP_INNER_KI_MILLI_STEP_PER_CM *

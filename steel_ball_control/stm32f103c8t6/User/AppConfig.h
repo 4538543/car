@@ -18,13 +18,14 @@
  * Gain values use the same fixed-point units as BallControl.c.
  */
 #define APP_OUTER_KP_MILLI_PER_S               1500L
-#define APP_TASK1_OUTER_KP_MILLI_PER_S         1650L
+#define APP_TASK1_OUTER_KP_MILLI_PER_S         1500L
 #define APP_OUTER_KI_MILLI_PER_S2              50L
 #define APP_OUTER_KD_MILLI                     100L
 #define APP_OUTER_INTEGRAL_LIMIT_MCM_MS        60000000LL
 #define APP_TARGET_VELOCITY_LIMIT_MCMPS        12000L
 
 #define APP_INNER_KP_MILLI_STEP_PER_CMPS       6000L
+#define APP_TASK1_INNER_KP_MILLI_STEP_PER_CMPS 6600L
 #define APP_INNER_KI_MILLI_STEP_PER_CM         1200L
 #define APP_INNER_KD_MILLI_STEP_PER_CMPS2      20L
 #define APP_INNER_INTEGRAL_LIMIT_MCMPS_MS      10000000LL

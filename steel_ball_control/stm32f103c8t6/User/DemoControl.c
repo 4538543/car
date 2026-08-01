@@ -229,6 +229,9 @@ void DemoControl_OnVisionFrame(
 		(g_status.state == DEMO_STATE_HOLD_CENTER) ?
 			APP_OUTER_KP_MILLI_PER_S :
 			APP_TASK1_OUTER_KP_MILLI_PER_S,
+		(g_status.state == DEMO_STATE_HOLD_CENTER) ?
+			APP_INNER_KP_MILLI_STEP_PER_CMPS :
+			APP_TASK1_INNER_KP_MILLI_STEP_PER_CMPS,
 		dt_ms);
 	g_status.ball_position_milli_cm =
 		output.filtered_position_milli_cm;
