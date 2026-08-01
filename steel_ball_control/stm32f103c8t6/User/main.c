@@ -37,6 +37,8 @@ int main(void)
 	uint8_t has_received_position;
 	uint16_t captured_target_position;
 	uint8_t captured_target_available;
+	uint8_t last_key_number;
+	uint16_t display_target;
 	MaixcamBallData ball;
 	DemoStatus status;
 
@@ -47,15 +49,16 @@ int main(void)
 	DemoControl_Init();
 
 	OLED_Clear();
-	OLED_ShowString(1, 1, "S:IDLE  E:0");
+	OLED_ShowString(1, 1, "S:IDLE  E:0 C:0");
 	OLED_ShowString(2, 1, "B:---- T:----");
 	OLED_ShowString(3, 1, "M:+000 P:+000");
-	OLED_ShowString(4, 1, "R:00000 E:000");
+	OLED_ShowString(4, 1, "R:00000 K:0");
 	last_display_ms = 0U;
 	last_received_position = 0U;
 	has_received_position = 0U;
 	captured_target_position = 0U;
 	captured_target_available = 0U;
+	last_key_number = 0U;
 
 	while (1)
 	{
@@ -87,6 +90,10 @@ int main(void)
 		DemoControl_Service(now_ms);
 
 		key = Key_GetNum();
+		if (key != 0U)
+		{
+			last_key_number = key;
+		}
 		if (key == 1U)
 		{
 			if (DemoControl_IsActive() != 0U)
@@ -136,6 +143,8 @@ int main(void)
 			status = DemoControl_GetStatus();
 			OLED_ShowString(1, 3, StateText(status.state));
 			OLED_ShowNum(1, 11, Stepper_IsEnabled(), 1);
+			OLED_ShowNum(
+				1, 15, captured_target_available, 1);
 			if (has_received_position != 0U)
 			{
 				OLED_ShowNum(
@@ -146,8 +155,19 @@ int main(void)
 			{
 				OLED_ShowString(2, 3, "----");
 			}
-			OLED_ShowNum(
-				2, 10, status.target_normalized, 4);
+			if ((status.state == DEMO_STATE_IDLE) &&
+				(captured_target_available == 0U))
+			{
+				OLED_ShowString(2, 10, "----");
+			}
+			else
+			{
+				display_target =
+					(status.state == DEMO_STATE_IDLE) ?
+					captured_target_position :
+					status.target_normalized;
+				OLED_ShowNum(2, 10, display_target, 4);
+			}
 			OLED_ShowSignedNum(
 				3, 3, status.desired_motor_steps, 3);
 			OLED_ShowSignedNum(
@@ -156,9 +176,7 @@ int main(void)
 			OLED_ShowNum(
 				4, 3,
 				MaixcamUart_GetValidFrameCount() % 100000U, 5);
-			OLED_ShowNum(
-				4, 11,
-				MaixcamUart_GetCrcErrorCount() % 1000U, 3);
+			OLED_ShowNum(4, 11, last_key_number, 1);
 		}
 	}
 }
