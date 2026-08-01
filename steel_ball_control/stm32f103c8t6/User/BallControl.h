@@ -16,6 +16,7 @@ void BallControl_ResetIntegrators(void);
 BallControlOutput BallControl_Update(
 	int32_t measured_position_milli_cm,
 	int32_t target_position_milli_cm,
+	int32_t outer_kp_milli_per_s,
 	uint32_t dt_ms);
 
 #endif

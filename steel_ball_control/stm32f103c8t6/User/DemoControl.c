@@ -226,6 +226,9 @@ void DemoControl_OnVisionFrame(
 	output = BallControl_Update(
 		measured_milli_cm,
 		g_status.target_milli_cm,
+		(g_status.state == DEMO_STATE_HOLD_CENTER) ?
+			APP_OUTER_KP_MILLI_PER_S :
+			APP_TASK1_OUTER_KP_MILLI_PER_S,
 		dt_ms);
 	g_status.ball_position_milli_cm =
 		output.filtered_position_milli_cm;

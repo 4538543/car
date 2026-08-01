@@ -68,6 +68,7 @@ void BallControl_Reset(int32_t measured_position_milli_cm)
 BallControlOutput BallControl_Update(
 	int32_t measured_position_milli_cm,
 	int32_t target_position_milli_cm,
+	int32_t outer_kp_milli_per_s,
 	uint32_t dt_ms)
 {
 	BallControlOutput output;
@@ -151,7 +152,7 @@ BallControlOutput BallControl_Update(
 			APP_OUTER_INTEGRAL_LIMIT_MCM_MS);
 
 		outer_p_milli_cmps =
-			((int64_t)APP_OUTER_KP_MILLI_PER_S *
+			((int64_t)outer_kp_milli_per_s *
 			 (int64_t)position_error_milli_cm) / 1000LL;
 		outer_i_milli_cmps =
 			((int64_t)APP_OUTER_KI_MILLI_PER_S2 *
