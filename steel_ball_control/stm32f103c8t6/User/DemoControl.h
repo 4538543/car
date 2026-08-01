@@ -11,6 +11,7 @@ typedef enum
 	DEMO_STATE_TO_PLUS5,
 	DEMO_STATE_TO_MINUS5,
 	DEMO_STATE_HOLD_MINUS5,
+	DEMO_STATE_HOLD_CENTER,
 	DEMO_STATE_FAULT
 } DemoState;
 
@@ -30,6 +31,7 @@ typedef struct
 
 void DemoControl_Init(void);
 void DemoControl_Start(uint32_t now_ms);
+void DemoControl_StartCenter(uint32_t now_ms);
 void DemoControl_Abort(void);
 void DemoControl_OnVisionFrame(
 	const MaixcamBallData *ball, uint32_t now_ms);

@@ -17,6 +17,8 @@ static char *StateText(DemoState state)
 			return "TO-5 ";
 		case DEMO_STATE_HOLD_MINUS5:
 			return "HOLD ";
+		case DEMO_STATE_HOLD_CENTER:
+			return "CENTR";
 		case DEMO_STATE_FAULT:
 			return "FAULT";
 		default:
@@ -82,7 +84,14 @@ int main(void)
 		}
 		else if (key == 2U)
 		{
-			DemoControl_Abort();
+			if (DemoControl_IsActive() != 0U)
+			{
+				DemoControl_Abort();
+			}
+			else
+			{
+				DemoControl_StartCenter(now_ms);
+			}
 		}
 		else if (key == 3U)
 		{
