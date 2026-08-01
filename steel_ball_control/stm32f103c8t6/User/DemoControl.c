@@ -15,31 +15,6 @@ static uint8_t g_recovery_frames;
 static uint8_t g_has_sample;
 static DemoState g_state_after_vision;
 
-static const BallControlGains g_task1_gains = {
-	APP_TASK1_OUTER_KP_MILLI_PER_S,
-	APP_TASK1_OUTER_KI_MILLI_PER_S2,
-	APP_TASK1_OUTER_KD_MILLI,
-	APP_TASK1_INNER_KP_MILLI_STEP_PER_CMPS,
-	APP_TASK1_INNER_KI_MILLI_STEP_PER_CM,
-	APP_TASK1_INNER_KD_MILLI_STEP_PER_CMPS2
-};
-static const BallControlGains g_task2_gains = {
-	APP_TASK2_OUTER_KP_MILLI_PER_S,
-	APP_TASK2_OUTER_KI_MILLI_PER_S2,
-	APP_TASK2_OUTER_KD_MILLI,
-	APP_TASK2_INNER_KP_MILLI_STEP_PER_CMPS,
-	APP_TASK2_INNER_KI_MILLI_STEP_PER_CM,
-	APP_TASK2_INNER_KD_MILLI_STEP_PER_CMPS2
-};
-static const BallControlGains g_task3_gains = {
-	APP_TASK3_OUTER_KP_MILLI_PER_S,
-	APP_TASK3_OUTER_KI_MILLI_PER_S2,
-	APP_TASK3_OUTER_KD_MILLI,
-	APP_TASK3_INNER_KP_MILLI_STEP_PER_CMPS,
-	APP_TASK3_INNER_KI_MILLI_STEP_PER_CM,
-	APP_TASK3_INNER_KD_MILLI_STEP_PER_CMPS2
-};
-
 static int32_t Abs32(int32_t value)
 {
 	return (value < 0) ? -value : value;
@@ -200,7 +175,6 @@ void DemoControl_OnVisionFrame(
 	int32_t measured_milli_cm;
 	int32_t position_error;
 	uint32_t dt_ms;
-	const BallControlGains *active_gains;
 
 	if (FrameUsable(ball) == 0U)
 	{
@@ -278,23 +252,19 @@ void DemoControl_OnVisionFrame(
 	}
 	g_last_camera_timestamp_ms = ball->timestamp_ms;
 
-	if (g_status.state == DEMO_STATE_HOLD_CENTER)
-	{
-		active_gains = &g_task2_gains;
-	}
-	else if (g_status.state == DEMO_STATE_HOLD_CAPTURED)
-	{
-		active_gains = &g_task3_gains;
-	}
-	else
-	{
-		active_gains = &g_task1_gains;
-	}
-
 	output = BallControl_Update(
 		measured_milli_cm,
 		g_status.target_milli_cm,
-		active_gains,
+		(g_status.state == DEMO_STATE_HOLD_CENTER) ?
+			APP_OUTER_KP_MILLI_PER_S :
+		(g_status.state == DEMO_STATE_HOLD_CAPTURED) ?
+			APP_TASK3_OUTER_KP_MILLI_PER_S :
+			APP_TASK1_OUTER_KP_MILLI_PER_S,
+		(g_status.state == DEMO_STATE_HOLD_CENTER) ?
+			APP_INNER_KP_MILLI_STEP_PER_CMPS :
+		(g_status.state == DEMO_STATE_HOLD_CAPTURED) ?
+			APP_TASK3_INNER_KP_MILLI_STEP_PER_CMPS :
+			APP_TASK1_INNER_KP_MILLI_STEP_PER_CMPS,
 		dt_ms);
 	g_status.ball_position_milli_cm =
 		output.filtered_position_milli_cm;
