@@ -29,6 +29,8 @@ int main(void)
 	uint8_t key;
 	uint32_t now_ms;
 	uint32_t last_display_ms;
+	uint16_t last_received_position;
+	uint8_t has_received_position;
 	MaixcamBallData ball;
 	DemoStatus status;
 
@@ -42,14 +44,26 @@ int main(void)
 	OLED_ShowString(1, 1, "S:IDLE  E:0");
 	OLED_ShowString(2, 1, "B:---- T:----");
 	OLED_ShowString(3, 1, "M:+000 P:+000");
-	OLED_ShowString(4, 1, "K1RUN K2STOP");
+	OLED_ShowString(4, 1, "R:00000 E:000");
 	last_display_ms = 0U;
+	last_received_position = 0U;
+	has_received_position = 0U;
 
 	while (1)
 	{
 		now_ms = Stepper_GetTickMs();
 		while (MaixcamUart_Poll(&ball) != 0U)
 		{
+			/*
+			 * Display the latest decoded coordinate directly. Do not let the
+			 * task-layer validity decision hide UART data that was received
+			 * correctly (including TRACK_HELD frames).
+			 */
+			if (ball.position <= 1000U)
+			{
+				last_received_position = ball.position;
+				has_received_position = 1U;
+			}
 			DemoControl_OnVisionFrame(&ball, now_ms);
 		}
 		DemoControl_Service(now_ms);
@@ -85,11 +99,11 @@ int main(void)
 			status = DemoControl_GetStatus();
 			OLED_ShowString(1, 3, StateText(status.state));
 			OLED_ShowNum(1, 11, Stepper_IsEnabled(), 1);
-			if (status.vision_valid != 0U)
+			if (has_received_position != 0U)
 			{
 				OLED_ShowNum(
 					2, 3,
-					status.ball_position_normalized, 4);
+					last_received_position, 4);
 			}
 			else
 			{
@@ -102,6 +116,12 @@ int main(void)
 			OLED_ShowSignedNum(
 				3, 10,
 				Stepper_GetCommandPosition(), 3);
+			OLED_ShowNum(
+				4, 3,
+				MaixcamUart_GetValidFrameCount() % 100000U, 5);
+			OLED_ShowNum(
+				4, 11,
+				MaixcamUart_GetCrcErrorCount() % 1000U, 3);
 		}
 	}
 }
